@@ -1,0 +1,77 @@
+@import "tailwindcss";
+
+/* LIGHT defaults */
+:root {
+  --background: #f6f7fb;
+  /* page background */
+  --foreground: #0f172a;
+  /* text */
+  --rail: #efeaf6;
+  /* right rail background */
+  --card: #ffffff;
+  /* plain white card in light */
+  --muted: #475569;
+
+  /* tiles = the rounded purple panels (dark only; light stays white) */
+  --tile-bg: #ffffff;
+  --tile-border: rgba(2, 6, 23, .08);
+
+  --bg-waves: radial-gradient(ellipse at 50% 0%, rgba(99, 102, 241, .08), transparent 50%);
+  --bg-waves-dark: radial-gradient(ellipse at 50% 0%, rgba(99, 102, 241, .15), transparent 50%);
+
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+}
+
+/* DARK overrides (next-themes toggles .dark on <html>) */
+.dark {
+  --background: #0a0a0a;
+  --foreground: #e5e7eb;
+  --rail: linear-gradient(180deg, #2a145e 0%, #130b2e 100%);
+
+  /* darker purple tiles like the mock */
+  --tile-bg: rgba(36, 21, 66, .85);
+  --tile-border: rgba(255, 255, 255, .08);
+
+  /* optional dark plain card (not heavily used now) */
+  --card: rgba(15, 23, 42, .6);
+  --muted: #cbd5e1;
+}
+
+html,
+body {
+  height: 100%
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-sans);
+}
+
+/* Board background waves */
+.board-background {
+  background-image: var(--bg-waves);
+}
+
+.dark .board-background {
+  background-image: var(--bg-waves-dark);
+}
+
+/* (Optional) thin scrollbars */
+* {
+  scrollbar-width: thin;
+}
+
+::-webkit-scrollbar {
+  height: 8px;
+  width: 8px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, .35);
+  border-radius: 999px;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: rgba(148, 163, 184, .25);
+}
