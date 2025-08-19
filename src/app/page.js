@@ -10,9 +10,9 @@ export default function Page() {
     <div className="flex min-h-dvh">
       <Sidebar />
 
-      {/* wider right bar */}
-      <main className="flex-1 grid grid-cols-1 lg:grid-cols-[1fr_500px] xl:grid-cols-[1fr_560px]">
-        {/* Board */}
+      {/* 65% / 35% from lg up; single column on small screens */}
+      <main className="flex-1 grid grid-cols-1 lg:grid-cols-[65%_35%]">
+        {/* Board (65%) */}
         <div className="px-6 pt-6 pb-10 board-background">
           <Topbar />
           <div className="mt-6 grid gap-6 xl:grid-cols-3 sm:grid-cols-2 grid-cols-1">
@@ -22,8 +22,11 @@ export default function Page() {
           </div>
         </div>
 
-        {/* Right rail with CSS var background */}
-        <aside className="hidden lg:block p-6 xl:p-8" style={{ background: 'var(--rail)' }}>
+        {/* Right rail (35%) */}
+        <aside
+          className="hidden lg:block p-6 xl:p-8"
+          style={{ background: 'var(--rail)' }}
+        >
           <RightPanel />
         </aside>
       </main>

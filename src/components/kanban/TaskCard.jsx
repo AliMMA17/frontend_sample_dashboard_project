@@ -6,43 +6,39 @@ import { AvatarGroup } from '@/components/ui/Avatar';
 export default function TaskCard({ task }) {
   return (
     <div
-      className="
-        rounded-2xl 
-        bg-[#1E1B3A]    /* <-- purple-ish background like the design */
-        p-4 
-        hover:shadow-lg 
-        transition-shadow
-        border 
-        border-[#2A2550]  /* subtle darker purple border */
-      "
+      className="rounded-[22px] border p-4 transition-shadow hover:shadow-md"
+      style={{
+        background: 'var(--tile-bg)',     // <- white in light, purple tile in dark
+        borderColor: 'var(--tile-border)' // <- subtle light/dark border
+      }}
     >
-      <div className="flex items-center gap-2 mb-2 flex-wrap">
+      {/* tags + menu */}
+      <div className="mb-2 flex flex-wrap items-center gap-2">
         {task.tags.map((t, i) => (
           <Badge key={i} label={t.label} tone={t.tone} />
         ))}
-        <button className="ml-auto text-slate-400 hover:text-slate-200">
+        <button className="ml-auto text-slate-500 dark:text-slate-300 hover:text-slate-700 dark:hover:text-slate-100">
           <MoreHorizontal size={18} />
         </button>
       </div>
 
+      {/* image */}
       {task.image ? (
-        <div className="mb-3 overflow-hidden rounded-xl">
-          <img
-            src={task.image}
-            alt="preview"
-            className="w-full h-36 object-cover"
-          />
+        <div className="mb-3 overflow-hidden rounded-xl ring-1 ring-black/5 dark:ring-white/10">
+          <img src={task.image} alt="preview" className="h-36 w-full object-cover" />
         </div>
       ) : null}
 
-      <h4 className="text-sm font-semibold mb-1 text-white">
+      {/* title + desc */}
+      <h4 className="mb-1 text-sm font-semibold text-slate-900 dark:text-slate-50">
         {task.title}
       </h4>
-      <p className="text-sm leading-relaxed text-slate-300 mb-4">
+      <p className="mb-4 text-sm leading-relaxed text-slate-600 dark:text-slate-400">
         {task.desc}
       </p>
 
-      <div className="flex items-center justify-between text-xs text-slate-400">
+      {/* footer */}
+      <div className="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
         <AvatarGroup names={task.people} />
         <div className="flex items-center gap-3">
           <span className="inline-flex items-center gap-1">
