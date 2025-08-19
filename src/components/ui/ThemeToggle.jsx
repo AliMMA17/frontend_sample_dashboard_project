@@ -11,7 +11,6 @@ export default function ThemeToggle() {
   if (!mounted) return null;
 
   const isDark = (theme === 'system' ? resolvedTheme : theme) === 'dark';
-
   const handleToggle = () => setTheme(isDark ? 'light' : 'dark');
 
   return (
@@ -22,41 +21,20 @@ export default function ThemeToggle() {
       aria-checked={!isDark}
       title={isDark ? 'Switch to light' : 'Switch to dark'}
       className={[
-        // pill container
-        'relative inline-flex items-center justify-between',
-        'h-9 w-[72px] rounded-full px-2',
-        // light pill bg vs dark pill bg (matches mock)
+        'relative inline-flex items-center justify-between h-9 w-[76px] rounded-full px-2',
         'bg-slate-200/80 dark:bg-slate-800/80',
-        // subtle border + shadow to “float” off the top bar
-        'border border-slate-300/70 dark:border-white/10 shadow-sm',
-        // focus
-        'outline-none focus-visible:ring-2 focus-visible:ring-violet-400',
-        // smooth animation
-        'transition-colors'
+        'border border-[color:var(--input-border)] dark:border-white/10 shadow-sm',
+        'outline-none focus-visible:ring-2 focus-visible:ring-violet-400 transition-colors'
       ].join(' ')}
     >
-      {/* moon icon (left) */}
-      <Moon
-        size={16}
-        className={isDark ? 'text-slate-100' : 'text-slate-500'}
-      />
-
-      {/* sun icon (right) */}
-      <Sun
-        size={16}
-        className={isDark ? 'text-slate-400' : 'text-slate-900'}
-      />
-
-      {/* sliding thumb/highlight */}
+      <Moon size={16} className={isDark ? 'text-slate-100' : 'text-slate-500'} />
+      <Sun size={16} className={isDark ? 'text-slate-400' : 'text-slate-900'} />
       <span
         aria-hidden="true"
         className={[
-          'absolute top-1 left-1 h-7 w-7 rounded-full',
-          // highlight color like the mock (light: white plate, dark: deep slate)
+          'absolute top-1 left-1 h-7 w-7 rounded-full shadow-sm',
           'bg-white dark:bg-slate-900',
-          'shadow-sm',
-          // slide to right when light
-          isDark ? 'translate-x-0' : 'translate-x-[34px]',
+          isDark ? 'translate-x-0' : 'translate-x-[36px]',
           'transition-transform'
         ].join(' ')}
       />

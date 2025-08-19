@@ -1,77 +1,74 @@
 @import "tailwindcss";
 
-/* LIGHT defaults */
+/* ---------------- LIGHT THEME (default) ---------------- */
 :root {
-  --background: #f6f7fb;
-  /* page background */
-  --foreground: #0f172a;
-  /* text */
-  --rail: #efeaf6;
-  /* right rail background */
-  --card: #ffffff;
-  /* plain white card in light */
-  --muted: #475569;
+  /* page + text */
+  --page: #f5f6fb;
+  /* canvas */
+  --text: #0f1035;
+  /* headings/body */
+  --muted: #73788c;
+  /* secondary text */
 
-  /* tiles = the rounded purple panels (dark only; light stays white) */
+  /* panels / tiles */
   --tile-bg: #ffffff;
-  --tile-border: rgba(2, 6, 23, .08);
+  /* cards, chips, buttons */
+  --tile-border: rgba(15, 16, 35, .10);
+  --chip-bg: rgba(15, 16, 35, .06);
 
-  --bg-waves: radial-gradient(ellipse at 50% 0%, rgba(99, 102, 241, .08), transparent 50%);
-  --bg-waves-dark: radial-gradient(ellipse at 50% 0%, rgba(99, 102, 241, .15), transparent 50%);
+  /* inputs */
+  --input-bg: #ffffff;
+  --input-border: rgba(15, 16, 35, .16);
 
-  --font-sans: ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial;
+  /* right rail gradient */
+  --rail: linear-gradient(180deg, #efeafb 0%, #ece9f9 100%);
+
+  /* board “waves” */
+  --background-image-waves: radial-gradient(ellipse at 50% 0%, rgba(99, 102, 241, .08), transparent 50%);
 }
 
-/* DARK overrides (next-themes toggles .dark on <html>) */
+/* ---------------- DARK THEME (toggle by adding `.dark` to <html> or <body>) ---------------- */
 .dark {
-  --background: #0a0a0a;
-  --foreground: #e5e7eb;
-  --rail: linear-gradient(180deg, #2a145e 0%, #130b2e 100%);
+  --page: #0b0920;
+  --text: #f4f5f9;
+  --muted: #a0a6b8;
 
-  /* darker purple tiles like the mock */
-  --tile-bg: rgba(36, 21, 66, .85);
-  --tile-border: rgba(255, 255, 255, .08);
+  --tile-bg: #17142b;
+  --tile-border: rgba(255, 255, 255, .06);
+  --chip-bg: rgba(255, 255, 255, .06);
 
-  /* optional dark plain card (not heavily used now) */
-  --card: rgba(15, 23, 42, .6);
-  --muted: #cbd5e1;
+  --input-bg: rgba(255, 255, 255, .08);
+  --input-border: rgba(255, 255, 255, .14);
+
+  --rail: linear-gradient(180deg, #2b114b 0%, #151133 100%);
+  --background-image-waves: radial-gradient(ellipse at 50% 0%, rgba(99, 102, 241, .15), transparent 50%);
 }
 
-html,
+/* base surface + text */
 body {
-  height: 100%
+  background: var(--page);
+  color: var(--text);
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: var(--font-sans);
+/* placeholders */
+::placeholder {
+  color: var(--muted);
 }
 
-/* Board background waves */
+/* board background */
 .board-background {
-  background-image: var(--bg-waves);
+  background-image: var(--background-image-waves);
 }
 
-.dark .board-background {
-  background-image: var(--bg-waves-dark);
+/* small helpers used by Topbar buttons/inputs (tokenized so both themes match the mock) */
+.token-input {
+  background: var(--input-bg);
+  border: 1px solid var(--input-border);
+  color: var(--text);
 }
 
-/* (Optional) thin scrollbars */
-* {
-  scrollbar-width: thin;
-}
-
-::-webkit-scrollbar {
-  height: 8px;
-  width: 8px;
-}
-
-::-webkit-scrollbar-thumb {
-  background: rgba(148, 163, 184, .35);
-  border-radius: 999px;
-}
-
-.dark ::-webkit-scrollbar-thumb {
-  background: rgba(148, 163, 184, .25);
+.token-chip {
+  background: var(--tile-bg);
+  border: 1px solid var(--tile-border);
+  color: var(--text);
 }
