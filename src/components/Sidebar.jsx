@@ -1,30 +1,51 @@
 'use client';
-import { LayoutGrid, MessageSquare, Calendar, Settings, Bell } from 'lucide-react';
-import ThemeToggle from './ui/ThemeToggle';
 
+import { Grid, MessageSquare, Calendar, Settings, Bell } from 'lucide-react';
 
 export default function Sidebar() {
-const items = [
-{ icon: LayoutGrid, label: 'Boards' },
-{ icon: MessageSquare, label: 'Messages' },
-{ icon: Calendar, label: 'Calendar' },
-{ icon: Settings, label: 'Settings' },
-{ icon: Bell, label: 'Alerts' },
-];
+  return (
+    <aside
+      className="
+        sticky top-0 z-30
+        flex h-dvh w-16 shrink-0 flex-col justify-between
+        bg-[var(--sidebar)] ring-1 ring-white/10
+      "
+    >
+      {/* top avatar + nav */}
+      <div className="flex flex-col items-center">
+        {/* app avatar */}
+        <div className="mt-4 grid h-9 w-9 place-items-center rounded-full bg-fuchsia-500/20 text-white font-semibold">
+          A
+        </div>
 
+        {/* nav */}
+        <nav className="mt-6 flex flex-col items-center gap-6 text-slate-300">
+          <button className="opacity-80 hover:opacity-100 transition-opacity" title="Board">
+            <Grid size={20} />
+          </button>
+          <button className="opacity-80 hover:opacity-100 transition-opacity" title="Messages">
+            <MessageSquare size={20} />
+          </button>
+          <button className="opacity-80 hover:opacity-100 transition-opacity" title="Calendar">
+            <Calendar size={20} />
+          </button>
+          <button className="opacity-80 hover:opacity-100 transition-opacity" title="Settings">
+            <Settings size={20} />
+          </button>
+        </nav>
+      </div>
 
-return (
-<aside className="hidden md:flex md:w-[80px] lg:w-[88px] flex-col items-center gap-6 border-r border-slate-200/70 bg-white/80 p-4 backdrop-blur-sm dark:border-white/10 dark:bg-slate-950/60">
-<div className="mt-1 mb-2 grid place-items-center w-9 h-9 rounded-xl bg-gradient-to-br from-violet-500 to-fuchsia-500 text-white font-bold">A</div>
-<nav className="flex-1 grid gap-3">
-{items.map(({ icon: Icon, label }) => (
-<button key={label} title={label}
-className="grid place-items-center rounded-xl p-3 text-slate-500 hover:bg-slate-100 dark:text-slate-400 dark:hover:bg-slate-900">
-<Icon size={22} />
-</button>
-))}
-</nav>
-<ThemeToggle />
-</aside>
-);
+      {/* footer (NO THEME TOGGLE HERE) */}
+      <div className="mb-4 flex flex-col items-center gap-6 text-slate-300">
+        <button className="opacity-70 hover:opacity-100 transition-opacity" title="Notifications">
+          <Bell size={20} />
+        </button>
+
+        {/* user bubble */}
+        <div className="grid h-9 w-9 place-items-center rounded-full bg-black/30 ring-1 ring-white/10 text-white">
+          N
+        </div>
+      </div>
+    </aside>
+  );
 }
