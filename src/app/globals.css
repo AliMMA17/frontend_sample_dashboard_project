@@ -72,3 +72,28 @@ body {
   border: 1px solid var(--tile-border);
   color: var(--text);
 }
+
+
+
+/* Donut gradients (LIGHT) */
+:root {
+  /* track arc behind the progress */
+  --donut-track-start: rgba(15, 16, 35, 0.08);
+  --donut-track-end: rgba(15, 16, 35, 0.16);
+
+  /* progress arc */
+  --donut-progress-start: #ff8a6b;
+  /* warm orange-pink like the mock */
+  --donut-progress-end: #ff4d5a;
+}
+
+/* Donut gradients (DARK) */
+.dark {
+  /* soft purple halo for the track (like the mock) */
+  --donut-track-start: rgba(137, 99, 241, 0.28);
+  --donut-track-end: rgba(69, 41, 165, 0.55);
+
+  /* same progress colors work nicely in dark */
+  --donut-progress-start: #ff8a6b;
+  --donut-progress-end: #ff4d5a;
+}

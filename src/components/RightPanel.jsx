@@ -11,8 +11,8 @@ export default function RightPanel() {
       {/* User header */}
       <div className="flex items-center justify-end gap-3">
         <div className="text-right">
-          <div className="text-sm font-semibold text-slate-100">David Cameron</div>
-          <div className="text-xs text-slate-300">cameron@gmail.com</div>
+          <div className="text-sm font-semibold text-slate-100">Ali Rashchi</div>
+          <div className="text-xs text-slate-300">alirashchi7@gmail.com</div>
         </div>
         <div className="rounded-full ring-2 ring-white/20">
           <Avatar name="David Cameron" size={40} />

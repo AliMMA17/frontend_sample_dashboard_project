@@ -8,8 +8,8 @@ export default function TaskCard({ task }) {
     <div
       className="rounded-[22px] border p-4 transition-shadow hover:shadow-md"
       style={{
-        background: 'var(--tile-bg)',     // <- white in light, purple tile in dark
-        borderColor: 'var(--tile-border)' // <- subtle light/dark border
+        background: 'var(--tile-bg)',     // light: white · dark: purple tile
+        borderColor: 'var(--tile-border)' // subtle border both themes
       }}
     >
       {/* tags + menu */}
@@ -17,7 +17,12 @@ export default function TaskCard({ task }) {
         {task.tags.map((t, i) => (
           <Badge key={i} label={t.label} tone={t.tone} />
         ))}
-        <button className="ml-auto text-slate-500 dark:text-slate-300 hover:text-slate-700 dark:hover:text-slate-100">
+
+        <button
+          className="ml-auto transition-opacity hover:opacity-80"
+          style={{ color: 'var(--muted)' }}   // uses token, so dark in light, light in dark
+          aria-label="More"
+        >
           <MoreHorizontal size={18} />
         </button>
       </div>
@@ -30,15 +35,25 @@ export default function TaskCard({ task }) {
       ) : null}
 
       {/* title + desc */}
-      <h4 className="mb-1 text-sm font-semibold text-slate-900 dark:text-slate-50">
+      <h4
+        className="mb-1 text-[15px] font-semibold"
+        style={{ color: 'var(--text)' }}       // <- dark text in light mode
+      >
         {task.title}
       </h4>
-      <p className="mb-4 text-sm leading-relaxed text-slate-600 dark:text-slate-400">
+
+      <p
+        className="mb-4 text-sm leading-relaxed"
+        style={{ color: 'var(--muted)' }}       // secondary text token
+      >
         {task.desc}
       </p>
 
       {/* footer */}
-      <div className="flex items-center justify-between text-xs text-slate-500 dark:text-slate-400">
+      <div
+        className="flex items-center justify-between text-xs"
+        style={{ color: 'var(--muted)' }}       // counts/icons follow muted token
+      >
         <AvatarGroup names={task.people} />
         <div className="flex items-center gap-3">
           <span className="inline-flex items-center gap-1">

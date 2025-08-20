@@ -1,136 +1,90 @@
 'use client';
 
-import { useId, useMemo } from 'react';
+import { useEffect, useId, useState } from 'react';
 import { useTheme } from 'next-themes';
 
-export default function ProgressDonut({
-  value = 61,     // 0..100
-  size = 180,     // px
-  stroke = 16,    // ring thickness
-}) {
-  const { resolvedTheme } = useTheme();
-  const id = useId();
+export default function ProgressDonut({ value = 61, size = 160, stroke = 14 }) {
+  const radius = (size - stroke) / 2;
+  const C = 2 * Math.PI * radius;
+  const dash = (value / 100) * C;
 
-  const r = (size - stroke) / 2;              // radius
-  const c = 2 * Math.PI * r;                  // circumference
-  const dashOffset = c * (1 - value / 100);   // remaining arc
-  const center = size / 2;
+  // ---- theme resolve happens only after mount ----
+  const { theme, resolvedTheme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
+  const isDark = mounted && ((theme === 'system' ? resolvedTheme : theme) === 'dark');
 
-  // angle end-point for the rounded cap dot (SVG is -90° start due to rotate)
-  const theta = (value / 100) * 2 * Math.PI - Math.PI / 2;
+  // stable IDs for gradients
+  const rid = useId();
+  const idTrackLight = `${rid}-grad-track-light`;
+  const idTrackDark  = `${rid}-grad-track-dark`;
+  const idProg       = `${rid}-grad-prog`;
 
-  // arc end coordinates for the dot (a little outside to sit centered on the stroke)
-  const dotR = stroke * 0.45;
-  const dotX = center + r * Math.cos(theta);
-  const dotY = center + r * Math.sin(theta);
-
-  // gradient ids
-  const gradProgress = `${id}-grad-progress`;
-  const gradTrackDark = `${id}-grad-track-dark`;
-  const gradTrackLight = `${id}-grad-track-light`;
-
-  // pick track gradient by theme
-  const trackStroke = resolvedTheme === 'dark'
-    ? `url(#${gradTrackDark})`
-    : `url(#${gradTrackLight})`;
-
-  // “mask” for the rounded cap dot visibility when value is 0
-  const showDot = value > 0.001;
-
-  // for SSR/hydration safety compute once when props change
-  const defs = useMemo(() => (
-    <defs>
-      {/* Progress gradient – make it punchy so it reads clearly */}
-      <linearGradient
-        id={gradProgress}
-        x1="0" y1="0" x2={size} y2={size}
-        gradientUnits="userSpaceOnUse"
-      >
-        <stop offset="0%"   stopColor="#FF5A6A" />
-        <stop offset="55%"  stopColor="#FF6A55" />
-        <stop offset="100%" stopColor="#FF8247" />
-      </linearGradient>
-
-      {/* Track gradient (DARK) – soft purple sweep */}
-      <linearGradient
-        id={gradTrackDark}
-        x1="0" y1="0" x2={size} y2={size}
-        gradientUnits="userSpaceOnUse"
-      >
-        <stop offset="0%"   stopColor="rgba(174, 143, 255, .30)" />
-        <stop offset="35%"  stopColor="rgba(126, 96, 255, .22)" />
-        <stop offset="100%" stopColor="rgba(82, 63, 160, .34)" />
-      </linearGradient>
-
-      {/* Track gradient (LIGHT) – subtle gray sweep */}
-      <linearGradient
-        id={gradTrackLight}
-        x1="0" y1="0" x2={size} y2={size}
-        gradientUnits="userSpaceOnUse"
-      >
-        <stop offset="0%"   stopColor="rgba(0,0,0,.06)" />
-        <stop offset="100%" stopColor="rgba(0,0,0,.12)" />
-      </linearGradient>
-    </defs>
-  ), [gradProgress, gradTrackDark, gradTrackLight, size]);
+  // Server render: placeholder box to avoid mismatches
+  if (!mounted) {
+    return (
+      <div
+        style={{ width: size, height: size }}
+        className="rounded-full bg-white/5 dark:bg-white/5"
+        aria-hidden
+      />
+    );
+  }
 
   return (
     <div className="grid place-items-center">
       <div className="relative" style={{ width: size, height: size }}>
         <svg
+          viewBox={`0 0 ${size} ${size}`}
           width={size}
           height={size}
-          viewBox={`0 0 ${size} ${size}`}
           className="-rotate-90"
         >
-          {defs}
+          <defs>
+            {/* track gradients */}
+            <linearGradient id={idTrackLight} x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%"  stopColor="#f2f2f6" />
+              <stop offset="100%" stopColor="#e9e9f2" />
+            </linearGradient>
+            <linearGradient id={idTrackDark} x1="0" y1="0" x2="1" y2="0">
+              <stop offset="0%"  stopColor="rgba(239,68,68,0.25)" />
+              <stop offset="100%" stopColor="#2a1f5a" />
+            </linearGradient>
 
-          {/* Track (full ring under) */}
+            {/* progress gradient (red/orange) */}
+            <linearGradient id={idProg} x1="0" y1="0" x2="1" y2="1">
+              <stop offset="0%"  stopColor="#ff6a6a" />
+              <stop offset="100%" stopColor="#ff4d4d" />
+            </linearGradient>
+          </defs>
+
+          {/* TRACK */}
           <circle
-            cx={center}
-            cy={center}
-            r={r}
-            stroke={trackStroke}
+            cx={size / 2}
+            cy={size / 2}
+            r={radius}
+            stroke={`url(#${isDark ? idTrackDark : idTrackLight})`}
             strokeWidth={stroke}
             fill="none"
             strokeLinecap="round"
           />
 
-          {/* Progress ring */}
+          {/* PROGRESS */}
           <circle
-            cx={center}
-            cy={center}
-            r={r}
-            stroke={`url(#${gradProgress})`}
+            cx={size / 2}
+            cy={size / 2}
+            r={radius}
+            stroke={`url(#${idProg})`}
             strokeWidth={stroke}
             fill="none"
             strokeLinecap="round"
-            strokeDasharray={c}
-            strokeDashoffset={dashOffset}
+            strokeDasharray={`${dash} ${C - dash}`}
           />
         </svg>
 
-        {/* Rounded end-cap dot (placed on top so it looks perfectly round) */}
-        {showDot && (
-          <svg
-            width={size}
-            height={size}
-            viewBox={`0 0 ${size} ${size}`}
-            className="-rotate-90 absolute inset-0"
-            aria-hidden
-          >
-            <circle
-              cx={dotX}
-              cy={dotY}
-              r={dotR}
-              fill="#FF8247"     // end color of the gradient
-            />
-          </svg>
-        )}
-
-        {/* Center label */}
+        {/* center label */}
         <div className="pointer-events-none absolute inset-0 grid place-items-center">
-          <span className="text-2xl font-bold">{value}%</span>
+          <span className="text-xl font-extrabold">{value}%</span>
         </div>
       </div>
     </div>
